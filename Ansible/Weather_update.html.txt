@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Weather Update</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+  <div id="weather"></div>
+
+  <script>
+    $(document).ready(function() {
+      function getWeather() {
+        $.ajax({
+          url: 'http://api.weatherstack.com/current',
+          data: {
+            access_key: '8feb7e2f7de6a053baedc552d2982b75',
+            query: 'Chicago' // Replace with the desired location
+          },
+          dataType: 'json',
+          success: function(data) {
+            var temperature = data.current.temperature;
+            var weatherDescription = data.current.weather_descriptions[0];
+            var humidity = data.current.humidity;
+
+            var weatherHTML = '<h2>Weather Update of Chicago!</h2>' +
+              '<p>Temperature: ' + temperature + '°C</p>' +
+              '<p>Weather: ' + weatherDescription + '</p>' +
+              '<p>Humidity: ' + humidity + '%</p>';
+
+            $('#weather').html(weatherHTML);
+          },
+          error: function() {
+            console.log('Failed to fetch weather data.');
+          }
+        });
+      }
+
+      // Fetch weather data on page load
+      getWeather();
+
+      // Fetch weather data every 5 minutes (300000 milliseconds)
+      setInterval(getWeather, 300000);
+    });
+  </script>
+</body>
+</html>

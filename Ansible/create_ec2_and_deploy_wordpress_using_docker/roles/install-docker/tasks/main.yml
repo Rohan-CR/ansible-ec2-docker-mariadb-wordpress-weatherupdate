@@ -1,0 +1,26 @@
+# Ansible playbook AWS - install docker
+- name: Update all packages
+  dnf:
+    name: '*'
+    state: latest
+    update_only: yes
+- name: Ensure a list of packages are installed
+  dnf:
+    name: "{{ packages }}"
+    state: latest
+    update_cache: yes
+  vars:
+    packages:
+    - python-pip
+    - yum-utils
+    - device-mapper-persistent-data
+    - lvm2
+    - docker
+
+- name: install python3, ansible and docker
+  shell: |
+    dnf install python3-pip
+    pip3 install ansible
+    pip3 install docker-py
+    systemctl start docker
+    systemctl enable docker
